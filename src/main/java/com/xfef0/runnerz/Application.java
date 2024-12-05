@@ -25,8 +25,8 @@ public class Application {
 	CommandLineRunner runner() {
 		return args -> {
 			Run run = new Run(1, "Test Run", LocalDateTime.now(),
-					LocalDateTime.now().plus(1, ChronoUnit.HOURS), 7, Location.OUTDOOR);
-			log.info("Run: " + run);
+                    LocalDateTime.now().plusHours(1), 7, Location.OUTDOOR);
+            log.info("Run: {}", run);
 		};
 	}
 

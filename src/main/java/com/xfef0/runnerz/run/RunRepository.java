@@ -1,48 +1,63 @@
 package com.xfef0.runnerz.run;
 
-import jakarta.annotation.PostConstruct;
+import jakarta.validation.Valid;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.Assert;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 @Repository
 public class RunRepository {
 
-    private List<Run> runs = new ArrayList<>();
+    private static final Logger logger = LoggerFactory.getLogger(RunRepository.class);
+    private final JdbcClient jdbcClient;
 
-    List<Run> findAll() {
-        return runs;
+    public RunRepository(JdbcClient jdbcClient) {
+        this.jdbcClient = jdbcClient;
     }
 
-    Optional<Run> findById(Integer id) {
-        return runs.stream()
-                .filter(run -> Objects.equals(run.id(), id))
-                .findFirst();
+    public List<Run> findAll() {
+        return jdbcClient.sql("SELECT * FROM run")
+                .query(Run.class)
+                .list();
     }
 
-    void create(Run run) {
-        runs.add(run);
+    public Optional<Run> findById(Integer id) {
+        return jdbcClient.sql("SELECT id, title, started_on, completed_on, kilometers, location" +
+                        " FROM run WHERE id = :id")
+                .param("id", id)
+                .query(Run.class)
+                .optional();
     }
 
-    void update(Run run, Integer id) {
-        findById(id)
-                .ifPresent(existingRun -> runs.set(runs.indexOf(existingRun), run));
+    public void create(@Valid Run run) {
+        int updated = jdbcClient.sql("INSERT INTO run(id, title, started_on, completed_on, kilometers, location) " +
+                        "VALUES(?, ?, ?, ?, ?, ?)")
+                .params(List.of(run.id(), run.title(), run.startedOn(), run.completedOn(), run.kilometers(),
+                        run.location().toString()))
+                .update();
+        Assert.state(updated == 1, "Failed to create run " + run.title());
     }
 
-    void delete(Integer id) {
-        runs.removeIf(run -> run.id().equals(id));
+    public void update(@Valid Run run, Integer id) {
+        var updated = jdbcClient.sql("UPDATE run SET title = ?, started_on = ?, completed_on = ?, kilometers = ?, " +
+                        "location = ? WHERE id = ?")
+                .params(List.of(run.title(), run.startedOn(), run.completedOn(), run.kilometers(),
+                        run.location().toString(), id))
+                .update();
+
+        Assert.state(updated == 1, "Failed to update run " + run.title());
     }
 
-    @PostConstruct
-    private void init() {
-        runs.add(new Run(1, "Monday evening run", LocalDateTime.now().minusDays(3),
-                LocalDateTime.now().minusDays(3).plusMinutes(45), 5, Location.OUTDOOR));
-        runs.add(new Run(2, "Wednesday evening run", LocalDateTime.now().minusDays(1),
-                LocalDateTime.now().minusDays(1).plusMinutes(70), 6, Location.INDOOR));
+    public void delete(Integer id) {
+        var updated = jdbcClient.sql("DELETE FROM run WHERE id = :id")
+                .param("id", id)
+                .update();
 
+        Assert.state(updated == 1, "Failed to delete run  with id " + id);
     }
 }
