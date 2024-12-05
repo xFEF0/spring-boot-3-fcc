@@ -60,4 +60,12 @@ public class RunRepository {
 
         Assert.state(updated == 1, "Failed to delete run  with id " + id);
     }
+
+    public void saveAll(List<Run> runs) {
+        runs.forEach(this::create);
+    }
+
+    public int count() {
+        return jdbcClient.sql("SELECT * FROM run").query().listOfRows().size();
+    }
 }

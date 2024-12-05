@@ -1,0 +1,68 @@
+{
+  "runs": [
+    {
+      "id": 1,
+      "title": "Monday morning run",
+      "startedOn": "2024-11-01T10:07:05.000000",
+      "completedOn": "2024-11-01T10:54:00.000000",
+      "kilometers": 5,
+      "location": "OUTDOOR"
+    },
+    {
+      "id": 2,
+      "title": "Tuesday noon run",
+      "startedOn": "2024-11-02T06:11:01.000000",
+      "completedOn": "2024-11-02T06:49:12.000000",
+      "kilometers": 4,
+      "location": "OUTDOOR"
+    },
+    {
+      "id": 3,
+      "title": "Thursday noon run",
+      "startedOn": "2024-11-04T07:05:01.000000",
+      "completedOn": "2024-11-04T07:55:10.000000",
+      "kilometers": 6,
+      "location": "OUTDOOR"
+    },
+    {
+      "id": 4,
+      "title": "Friday afternoon run",
+      "startedOn": "2024-11-05T17:13:01.000000",
+      "completedOn": "2024-11-05T17:59:24.000000",
+      "kilometers": 6,
+      "location": "INDOOR"
+    },
+    {
+      "id": 5,
+      "title": "Monday night run",
+      "startedOn": "2024-11-08T20:03:00.000000",
+      "completedOn": "2024-11-08T20:46:11.000000",
+      "kilometers": 5,
+      "location": "INDOOR"
+    },
+    {
+      "id": 6,
+      "title": "Tuesday noon run",
+      "startedOn": "2024-11-09T06:07:01.000000",
+      "completedOn": "2024-11-09T06:43:12.000000",
+      "kilometers": 4,
+      "location": "OUTDOOR"
+    },
+    {
+      "id": 7,
+      "title": "Wednesday morning run",
+      "startedOn": "2024-11-10T09:11:01.000000",
+      "completedOn": "2024-11-10T10:02:02.000000",
+      "kilometers": 6,
+      "location": "OUTDOOR"
+    },
+    {
+      "id": 8,
+      "title": "Sunday afternoon run",
+      "startedOn": "2024-11-14T16:46:03.000000",
+      "completedOn": "2024-11-14T17:38:32.000000",
+      "kilometers": 6,
+      "location": "INDOOR"
+    }
+  ]
+}
