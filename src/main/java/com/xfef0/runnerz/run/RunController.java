@@ -24,12 +24,8 @@ public class RunController {
 
     @GetMapping("/{id}")
     Run findById(@PathVariable Integer id) {
-
-        Optional<Run> run = runRepository.findById(id);
-        if (run.isEmpty()) {
-            throw new RunNotFoundException();
-        }
-        return run.get();
+        return runRepository.findById(id)
+                .orElseThrow(RunNotFoundException::new);
     }
 
     @ResponseStatus(HttpStatus.CREATED)
@@ -47,7 +43,10 @@ public class RunController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/{id}")
     void delete(@PathVariable Integer id) {
-        runRepository.delete(runRepository.findById(id).get());
+        Run run = runRepository.findById(id)
+                .orElseThrow(RunNotFoundException::new);
+        runRepository.delete(run);
+
     }
 
     @GetMapping("/location/{location}")
