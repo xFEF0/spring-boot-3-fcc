@@ -27,7 +27,7 @@ public class JdbcClientRunRepository {
     }
 
     public Optional<Run> findById(Integer id) {
-        return jdbcClient.sql("SELECT id, title, started_on, completed_on, kilometers, location" +
+        return jdbcClient.sql("SELECT id, title, started_on, completed_on, kilometers, location, version" +
                         " FROM run WHERE id = :id")
                 .param("id", id)
                 .query(Run.class)
@@ -58,7 +58,7 @@ public class JdbcClientRunRepository {
                 .param("id", id)
                 .update();
 
-        Assert.state(updated == 1, "Failed to delete run  with id " + id);
+        Assert.state(updated == 1, "Failed to delete run with id " + id);
     }
 
     public void saveAll(List<Run> runs) {
@@ -67,5 +67,12 @@ public class JdbcClientRunRepository {
 
     public int count() {
         return jdbcClient.sql("SELECT * FROM run").query().listOfRows().size();
+    }
+
+    public List<Run> findByLocation(String location) {
+        return jdbcClient.sql("SELECT * FROM run WHERE location = :location")
+                .param("location", location)
+                .query(Run.class)
+                .list();
     }
 }
